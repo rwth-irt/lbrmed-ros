@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+    <!-- Copyright (c) 2020, Institute of Automatic Control - RWTH Aachen University
+    All rights reserved. -->
+
+    <!-- Use your URDF values -->
+    <arg name="arm_id" default="lbrmed14" />
+    <arg name="compliance_ref_link" default="$(arg arm_id)_link8" />
+    <arg name="end_effector_link" default="$(arg arm_id)_link8" />
+    <arg name="ft_sensor_ref_link" default="$(arg arm_id)_link8" />
+
+    <!-- 
+        joint_state_controller publishes position, velocity and effort of the joint
+        force_torque_controller publishes the cartesian force and torque in the robot base frame.
+        The hardware interface only supports the position joint interface for now.
+     -->
+    <arg name="controllers" default="joint_state_controller force_torque_sensor_controller PositionJointInterface_trajectory_controller" />
+    <!-- These controllers are only loaded and not started -->
+    <arg name="load_controllers" default=" cartesian_motion_control_handle PositionJointInterface_cartesian_motion_controller PositionJointInterface_abs_admittance_controller" />
+
+    <!-- Frequency of the control loop, Position requires ≤ 10ms, Effort ≤ 5ms response -->
+    <arg name="control_loop_hz" default="200" />
+
+    <!-- Loads joint controller configurations from YAML file to parameter server -->
+    <rosparam file="$(find lbrmed_control)/config/lbrmed_control.yaml" command="load" subst_value="true" />
+
+    <!-- Loads the controllers without starting them-->
+    <node name="lbrmed14_controller_loader" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--stopped $(arg load_controllers)" />
+
+    <!-- Loads the controllers and starts the controllers -->
+    <node name="lbrmed14_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="$(arg controllers)" />
+
+</launch>

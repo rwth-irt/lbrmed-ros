@@ -1,0 +1,8 @@
+- git:
+    local-name: cartesian_controllers
+    uri: https://github.com/fzi-forschungszentrum-informatik/cartesian_controllers.git
+    version: ros1
+- git:
+    local-name: ros_control_boilerplate
+    uri: https://github.com/Tuebel/ros_control_boilerplate.git
+    version: combined_robot_hw_draft

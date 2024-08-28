@@ -1,0 +1,13 @@
+controller_list:
+  - name: fake_lbrmed_arm_controller
+    joints:
+      - lbrmed14_joint1
+      - lbrmed14_joint2
+      - lbrmed14_joint3
+      - lbrmed14_joint4
+      - lbrmed14_joint5
+      - lbrmed14_joint6
+      - lbrmed14_joint7
+initial:  # Define initial robot poses.
+  - group: lbrmed_arm
+    pose: zeros

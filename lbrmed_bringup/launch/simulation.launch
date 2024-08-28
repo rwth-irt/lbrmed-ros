@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+  <!-- Copyright (c) 2020, Institute of Automatic Control - RWTH Aachen University
+  All rights reserved. -->
+
+  <arg name="arm_id" default="lbrmed14" />
+  <!-- MoveIt -->
+  <arg name="debug_moveit" default="false" />
+  <arg name="pipeline" value="ompl" />
+  <!-- en-/disable the force-torque sensor -->
+  <arg name="enable_ft" default="false" />
+
+  <!-- en-/disable the moveit planning scene -->
+  <!-- models to be exluded from the MoveIt planning scene-->
+  <arg name="exclude_models" default="unit_box,unit_cylinder" />
+
+  <!-- Note the syntax to pass a vector -->
+  <arg name="origin_xyz" default="'0 0 0.9'" />
+  <arg name="origin_rpy" default="'0 0 0'" />
+  <arg name="physics" default="bullet" />
+
+  <!-- 
+    EffortJointInterface for grasping tasks
+    PositionJointInterface for FZI cartesian controllers 
+   -->
+  <arg name="hardware_interface" default="PositionJointInterface"  />
+  <arg name="enable_safety_limits" default="true" />
+  <!-- Frequency of the control loop, Position requires ≤ 10ms, Effort ≤ 5ms response -->
+  <arg name="control_loop_hz" default="200" />
+
+  <!-- Load the URDF with the given hardware interface into the ROS Parameter Server -->
+  <include file="$(find lbrmed_description)/launch/lbrmed14_upload.launch">
+    <arg name="arm_id" value="$(arg arm_id)" />
+    <!-- IMPORTANT: Gazebo requires a link named "world" to fix the robot in the world -->
+    <arg name="connected_to" value="world" />
+    <arg name="enable_ft" value="$(arg enable_ft)" />
+    <arg name="enable_safety_limits" value="$(arg enable_safety_limits)" />
+    <arg name="enable_world_link" value="true" />
+    <arg name="exclude_models" value="$(arg exclude_models)" />
+    <arg name="hardware_interface" value="$(arg hardware_interface)" />
+    <arg name="origin_xyz" value="$(arg origin_xyz)" />
+    <arg name="origin_rpy" value="$(arg origin_rpy)" />
+  </include>
+
+  <!-- Run MoveIt! with trajectory execution -->
+  <include file="$(find lbrmed_moveit_config)/launch/move_group.launch">
+    <arg name="arm_id" value="$(arg arm_id)" />
+    <arg name="capabilities" value="move_group/ExecuteTaskSolutionCapability" />
+    <arg name="debug" value="$(arg debug_moveit)" />
+    <arg name="hardware_interface" value="$(arg hardware_interface)" />
+    <arg name="pipeline" value="$(arg pipeline)" />
+  </include>
+
+  <!-- ROS control boilerplate SimHWInterface -->
+  <include file="$(find lbrmed_control)/launch/lbrmed_sim_hw.launch" >
+    <arg name="arm_id" value="$(arg arm_id)" />
+    <arg name="control_loop_hz" value="$(arg control_loop_hz)" />
+  </include>
+
+  <!-- Trajectory controller for MoveIt -->
+  <include file="$(find lbrmed_control)/launch/lbrmed_control.launch">
+    <arg name="arm_id" value="$(arg arm_id)" />
+    <arg name="compliance_ref_link" value="$(arg arm_id)_link8" />
+    <arg name="end_effector_link" value="$(arg arm_id)_link8" />
+    <arg name="ft_sensor_ref_link" value="$(arg arm_id)_link8" />
+    <arg name="control_loop_hz" value="$(arg control_loop_hz)" />
+    <arg name="controllers" value="joint_state_controller $(arg hardware_interface)_trajectory_controller" />
+    <arg name="load_controllers" value="cartesian_motion_control_handle  PositionJointInterface_cartesian_motion_controller PositionJointInterface_abs_admittance_controller" />
+  </include>
+
+  <node name="rqt_controller_manager" pkg="rqt_controller_manager" type="rqt_controller_manager" />
+
+  <!-- tf information about about the robot pose for RViz -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+    <param name="publish_frequency" value="$(arg control_loop_hz)" />
+    <param name="tf_prefix" type="string" value="" />
+  </node>
+
+  <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  <include file="$(find lbrmed_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="rviz_config" value="$(find lbrmed_moveit_config)/launch/moveit.rviz" />
+    <arg name="debug" value="false" />
+  </include>
+
+</launch>

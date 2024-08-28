@@ -1,0 +1,21 @@
+# Copyright (c) 2020, Institute of Automatic Control - RWTH Aachen University
+# All rights reserved.
+
+# Used by GenericHWInterface
+hardware_interface:
+  joints:
+    - $(arg arm_id)_joint1
+    - $(arg arm_id)_joint2
+    - $(arg arm_id)_joint3
+    - $(arg arm_id)_joint4
+    - $(arg arm_id)_joint5
+    - $(arg arm_id)_joint6
+    - $(arg arm_id)_joint7
+# Used by CombinedRobotHW
+type: lbrmed_hw_fri/HardwareInterface
+# Force torque sensor estimate
+base_link: $(arg arm_id)_link0
+end_effector_link: $(arg arm_id)_link8
+# [sec] Low pass filtering, choose T< 1/loop_hz to disable it.
+effort_pt1_T: $(arg effort_pt1_T)
+velocity_pt1_T: $(arg velocity_pt1_T)

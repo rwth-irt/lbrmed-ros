@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="lbrmed14"
+  xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Arguments for the lbrMED14 to set externally -->
+  <xacro:arg name="enable_world_link" default="false" />
+  <xacro:arg name="connected_to" default=""/>
+  <xacro:arg name="xyz" default="'0 0 0 '"/>
+  <xacro:arg name="rpy" default="'0 0 0 '"/>
+  <xacro:arg name="hardware_interface" default="PositionJointInterface"/>
+  <xacro:arg name="arm_id" default="lbrmed14" />
+  <!-- en-/disable the safety controllers-->
+  <xacro:arg name="enable_safety_limits" default="false"/>
+  <!-- en-/disable the force-torque sensor -->
+  <xacro:arg name="enable_ft" default="false"/>
+  <!-- en-/disable the MoveIt! planning scene Gazebo plugin -->
+  <xacro:arg name="enable_gazebo_planning_scene" default="false"/>
+  <!-- models to be exluded from the moveit planning scene-->
+  <xacro:arg name="exclude_models" default="unit_box,unit_cylinder"/>
+
+  <!-- Enable a world link if required (e.g. fixed position in Gazebo) -->
+  <xacro:if value="$(arg enable_world_link)">
+    <link name="world"/>
+  </xacro:if>
+
+  <!-- Import the lbrMED14 macro -->
+  <xacro:include filename="$(find lbrmed_description)/urdf/lbrmed14.xacro"/>
+  <!-- Import Transmissions macro -->
+  <xacro:include filename="$(find lbrmed_description)/urdf/lbrmed.transmission.xacro" />
+  <!-- Import all Gazebo-customization elements, including Gazebo colors -->
+  <xacro:include filename="$(find lbrmed_description)/urdf/lbrmed.gazebo.xacro" />
+
+  <!-- lbrmed14 -->
+  <xacro:lbrmed14 connected_to="$(arg connected_to)" arm_id="$(arg arm_id)" xyz="$(arg xyz)" rpy="$(arg rpy)" enable_safety_limits="$(arg enable_safety_limits)"/>
+  <xacro:lbrmed_transmission hardware_interface="$(arg hardware_interface)" arm_id="$(arg arm_id)" />
+  <xacro:lbrmed_gazebo arm_id="$(arg arm_id)" enable_ft="$(arg enable_ft)" enable_gazebo_planning_scene="$(arg enable_gazebo_planning_scene)" exclude_models="$(arg exclude_models)"/>
+
+</robot>

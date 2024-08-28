@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot>
+
+  <material name="lbrmed_black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+  </material>
+
+
+  <material name="lbrmed_grey">
+    <color rgba="0.4 0.4 0.4 1.0"/>
+  </material>
+
+  <material name="lbrmed_white">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+  </material>
+
+  <material name="lbrmed_RAL9016">
+    <color rgba="${241/255} ${240/255} ${234/255} 1.0"/>
+  </material>
+
+</robot>

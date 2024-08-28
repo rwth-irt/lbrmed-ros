@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: lbrmed_description
+    relative_path: urdf/lbrmed14.urdf.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/lbrmed14.srdf
+  CONFIG:
+    author_name: Tim Redick
+    author_email: t.redick@irt.rwth-aachen.de
+    generated_timestamp: 1605720372

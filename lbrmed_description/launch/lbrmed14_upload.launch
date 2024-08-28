@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+
+  <!-- This launch file just loads the URDF with the given hardware interface and arm id into the ROS Parameter Server -->
+  <arg name="connected_to" default="world"/>
+  <arg name="enable_world_link" default="true"/>
+
+  <arg name="hardware_interface" default="EffortJointInterface"/>
+  <arg name="arm_id" default="lbrmed14"/>
+
+  <!-- en-/disable the safety controllers -->
+  <arg name="enable_safety_limits" default="false"/>
+  <!-- en-/disable the force-torque sensor -->
+  <arg name="enable_ft" default="false"/>
+  <!-- en-/disable the MoveIt! planning scene Gazebo plugin -->
+  <arg name="enable_gazebo_planning_scene" default="false"/>
+  <!-- models to be exluded from the moveit planning scene-->
+  <arg name="exclude_models" default="unit_box,unit_cylinder"/>
+
+  <arg name="origin_xyz" default="'0 0 0'"/>
+  <!-- Note the syntax to pass a vector -->
+  <arg name="origin_rpy" default="'0 0 0'"/>
+
+  <!--group ns="$(arg arm_id)"-->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find lbrmed_description)/urdf/lbrmed14.urdf.xacro' enable_world_link:=$(arg enable_world_link) connected_to:=$(arg connected_to) hardware_interface:=$(arg hardware_interface) arm_id:=$(arg arm_id) xyz:=$(arg origin_xyz) rpy:=$(arg origin_rpy) enable_ft:=$(arg enable_ft) enable_gazebo_planning_scene:=$(arg enable_gazebo_planning_scene) exclude_models:=$(arg exclude_models) enable_safety_limits:=$(arg enable_safety_limits)"/>
+  <!--/group-->
+
+</launch> 

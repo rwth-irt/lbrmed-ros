@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    container: moveit/moveit:noetic-release
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup ROS workspace and dependencies
+        run: |
+          mkdir src
+          ls --almost-all --ignore .catkin_tools --ignore build --ignore devel --ignore src | xargs mv -t src
+          git clone --depth 1 https://YOUR_GITHUB_TOKEN@github.com/YOUR_USERNAME/ros-devcontainer.git /ros_devcontainer
+          cd /ros_devcontainer &;&; ls --almost-all | xargs mv -n -t ${GITHUB_WORKSPACE} &;&; cd ${GITHUB_WORKSPACE}
+          sed -i 's/https:\/\/git-ce\./https:\/\/YOUR_GITHUB_TOKEN\@github.com\//g' src/.rosinstall
+          wstool update -t src
+          . .devcontainer/postCreate.sh
+
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    container: moveit/moveit:noetic-release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Reuse the setup job's workspace state by caching it.
+      - name: Cache catkin workspace directories
+        uses: actions/cache@v2
+        with:
+          path: |
+            .catkin_tools
+            build 
+            devel
+          key: ${{ runner.os }}-build-${{ github.sha }}
+
+      # Run the actual build commands.
+      - name: Build with catkin tools
+        run: catkin build --summarize --no-status --force-color
+
+      # Upload artifacts (if needed)
+      # Note that GitHub Actions handles artifacts differently than GitLab CI.
+      # You may need to add additional steps here to upload and store artifacts.
+
+  linting_and_tests:
+    needs: build
+    runs-on: ubuntu-latest
+    container: moveit/moveit:noetic-release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Reuse the previous job's workspace state by caching it.
+      - name: Cache catkin workspace directories
+        uses: actions/cache@v2
+        with:
+          path: |
+            .catkin_tools 
+            build 
+            devel
+          key: ${{ runner.os }}-build-${{ github.sha }}
+
+        # Source the setup.bash script before running tests.
+      - name: Source setup.bash and run catkin_lint
+        run: |
+          source devel/setup.bash  
+          catkin_lint -W2 --pkg lbrmed_bringup —pkg lbrmed_control —pkg lbrmed_description —pkg lbrmed_hw_fri —pkg lbrmed_moveit_config —pkg lbrmed_msgs
+
+        # Run catkin tests.
+      - name: Run Catkin Tests
+        run: |
+          source devel/setup.bash  
+          catkin test –no-deps lbrmed_bringup lbrmed_control lbrmed_description lbrmed_hw_fri lbrmed_moveit_config lbrmed_msgs

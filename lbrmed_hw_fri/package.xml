@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lbrmed_hw_fri</name>
+  <version>1.0.0</version>
+  <description>ROS2 wrapper for KUKA fast robot interface</description>
+  <maintainer email="t.redick@irt.rwth-aachen.de">Tim Redick</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>dynamic_reconfigure</depend>
+  <depend>eigen</depend>
+  <depend>fri</depend>
+  <depend>kdl_parser</depend>
+  <depend>lbrmed_msgs</depend>
+  <depend>pluginlib</depend>
+  <depend>ros_control_boilerplate</depend>
+  <depend>roscpp</depend>
+  <depend>rosparam_shortcuts</depend>
+  <exec_depend>hardware_interface</exec_depend>
+  <exec_depend>lbrmed_control</exec_depend>
+
+  <export>
+    <hardware_interface plugin="${prefix}/lbrmed_hw_fri_plugin.xml" />
+  </export>
+
+</package>

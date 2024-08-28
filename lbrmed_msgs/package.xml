@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lbrmed_msgs</name>
+  <version>0.0.1</version>
+  <description>Message and service definitions to communicate with the cabinet</description>
+  <author email="jannik.haas@rwth-aachen.de">Jannik Haas</author>
+  <maintainer email="t.redick@irt.rwth-aachen.de">Tim Redick</maintainer>
+  <license>BSD-3</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>actionlib_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <build_depend>dynamic_reconfigure</build_depend>
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>

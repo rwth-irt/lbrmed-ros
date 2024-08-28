@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+  <!-- Test the controllers with a simple simulated interface, avoiding Gazebo & MoveIt fake controllers -->
+  <arg name="arm_id" default="lbrmed14" />
+  <arg name="control_loop_hz" default="200" />
+
+  <rosparam file="$(find lbrmed_control)/config/lbrmed_sim_hw.yaml" command="load" subst_value="true" />
+  <node name="sim_hardware_interface" pkg="ros_control_boilerplate" type="sim_hw_main" output="screen" />
+
+</launch>

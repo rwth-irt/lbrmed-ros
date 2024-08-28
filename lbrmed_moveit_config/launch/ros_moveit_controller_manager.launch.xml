@@ -1,0 +1,6 @@
+<launch>
+
+  <!-- Automatically finds a matching ros controller -->
+  <param name="moveit_controller_manager" value="moveit_ros_control_interface::MoveItMultiControllerManager"/>
+
+</launch>

@@ -1,0 +1,21 @@
+<launch>
+    <arg name="arm_id" default="lbrmed14" />
+    <!-- Placeholder for compatibility with the simulation -->
+    <arg name="hardware_interface" default="unused" />
+    <!-- Frequency of the control loop, Position requires ≤ 10ms, Effort ≤ 5ms response -->
+    <arg name="control_loop_hz" default="250" />
+
+    <!-- PT1 time constants -->
+    <arg name="effort_pt1_T" default="0.02" />
+    <arg name="velocity_pt1_T" default="0.02" />
+
+    <!-- ROS parameters -->
+    <rosparam command="load" file="$(find lbrmed_hw_fri)/config/lbrmed_hw_fri.yaml" subst_value="true" />
+
+    <!-- Communication with the hardware -->
+    <node name="lbrmed_hw_fri" pkg="lbrmed_hw_fri" type="lbrmed_hw_fri_node" respawn="true" output="screen">
+        <param name="arm_id" value="$(arg arm_id)" />
+        <param name="hardware_interface" value="$(arg hardware_interface)" />
+    </node>
+
+</launch>

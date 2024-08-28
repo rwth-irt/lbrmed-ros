@@ -1,0 +1,21 @@
+# @license BSD-3 https://opensource.org/licenses/BSD-3-Clause
+# Copyright (c) 2022, Institute of Automatic Control - RWTH Aachen University
+# All rights reserved.
+
+# Use with ROS control boilerplate
+generic_hw_control_loop:
+  loop_hz: $(arg control_loop_hz)
+  cycle_time_error_threshold: 0.01
+
+# SimHWInterface
+hardware_interface:
+  sim_control_mode: 0
+  joints:
+    - $(arg arm_id)_joint1
+    - $(arg arm_id)_joint2
+    - $(arg arm_id)_joint3
+    - $(arg arm_id)_joint4
+    - $(arg arm_id)_joint5
+    - $(arg arm_id)_joint6
+    - $(arg arm_id)_joint7
+

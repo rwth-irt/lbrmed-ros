@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<RoboticsAPIData version="3">
+    <world>
+        <gravitation x="0.0" y="0.0" z="9.81"/>
+    </world>
+    <objectTemplates>
+        <toolTemplate class="" name="DefaultTool">
+            <frames>
+                <frame id="_a891dd6d-99f5-4e9e-b330-c1a07af719e4" name="center">
+                    <transformation a="0.0" b="0.0" c="0.0" x="0.0" y="0.0" z="140.0"/>
+                    <additionalInformation>
+                        <info key="Radius" type="java.lang.Integer" value="100"/>
+                        <info key="SafetyID" type="java.lang.Integer" value="0"/>
+                    </additionalInformation>
+                </frame>
+            </frames>
+            <additionalInformation>
+                <info key="SafetyID" type="java.lang.Integer" value="1"/>
+                <info key="ToolVelocityPointPath" type="java.lang.String" value="/center"/>
+            </additionalInformation>
+            <loadData cogA="0.0" cogB="0.0" cogC="0.0" cogX="0.0" cogY="0.0" cogZ="0.0" inertiaX="0.0" inertiaY="0.0" inertiaZ="0.0" mass="0.0"/>
+        </toolTemplate>
+    </objectTemplates>
+    <processDataContainer>
+        <processData dataType="java.lang.String" defaultValue="lbrmed14" displayName="Robot Name" editableOnHmi="true" id="robot_name" value="lbrmed14"/>
+        <processData dataType="java.lang.String" defaultValue="172.31.1.150" displayName="ROS Master IP" editableOnHmi="true" id="master_ip" value="172.31.1.150"/>
+        <processData dataType="java.lang.String" defaultValue="11311" displayName="ROS Master Port" editableOnHmi="false" id="master_port" value="11311"/>
+        <processData dataType="java.lang.String" defaultValue="172.31.1.147" displayName="Robot IP" editableOnHmi="false" id="robot_ip" value="172.31.1.147" visibleOnHmi="false"/>
+        <processData dataType="java.lang.Boolean" defaultValue="true" displayName="Enable NTP" editableOnHmi="true" id="ntp" value="true"/>
+        <processData dataType="java.lang.Boolean" defaultValue="false" displayName="Enable Debug Output" editableOnHmi="true" id="debug" value="false"/>
+    </processDataContainer>
+</RoboticsAPIData>

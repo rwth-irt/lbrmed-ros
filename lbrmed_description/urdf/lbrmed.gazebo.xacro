@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="lbrmed_gazebo" params="arm_id enable_ft:='false' enable_gazebo_planning_scene:='false' exclude_models:='unit_box,unit_cylinder'">
+    <!-- 
+      GLITCH: preserveFixedJoint seems to be broken right now.
+      The virtual joint + link 8 caused trouble mutliple times.
+      Thus, we assume that the feedback is accurate enough at the close joint 7
+      See http://gazebosim.org/tutorials?tut=force_torque_sensor -->
+
+
+    <!-- enable force torque https://answers.ros.org/question/221702/force-torque-sensor-simulation/ -->
+    <xacro:if value="${enable_ft}">
+      <!-- enable force torque https://answers.ros.org/question/221702/force-torque-sensor-simulation/ -->
+      <gazebo reference="${arm_id}_joint8">
+        <!-- https://answers.gazebosim.org//question/22206/fixed-joint-vs-continuous-joint/ -->
+        <provideFeedback>true</provideFeedback>
+        <preserveFixedJoint>true</preserveFixedJoint>
+      </gazebo>
+      <gazebo>
+        <plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+          <updateRate>100.0</updateRate>
+          <topicName>${arm_id}/state/CartesianWrench</topicName>
+          <jointName>${arm_id}_joint8</jointName>
+          <gaussianNoise>0.01</gaussianNoise>
+        </plugin>
+      </gazebo>
+    </xacro:if>
+
+    <!-- simulation of the hardware interface -->
+    <gazebo>
+      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>${arm_id}</robotNamespace>
+      </plugin>
+    </gazebo>
+
+    <!-- enables the libgazebo_ros_moveit_planning_scene.so that publishes the gazebo world to the moveit planning scene -->
+    <!-- https://git-ce.rwth-aachen.de/g-med-irt-robotik/lbrmed-stack/-/wikis/Moveit-Planning-Scene-Plugin -->
+    <xacro:if value="${enable_gazebo_planning_scene}">
+      <gazebo>
+        <plugin name="gazebo_ros_moveit_planning_scene" filename="libgazebo_ros_moveit_planning_scene.so">
+          <topicName>/planning_scene</topicName>
+          <rosNamespace>gazebo</rosNamespace>
+          <sceneName>gazebo_scene</sceneName>
+          <robotName>lbrmed14</robotName>
+          <updatePeriod>1</updatePeriod>
+          <includeAttachedCollisionObjects>true</includeAttachedCollisionObjects>
+          <serviceName>apply_planning_scene</serviceName>
+          <excludeModels>${exclude_models}</excludeModels>
+        </plugin>
+      </gazebo>
+    </xacro:if>
+
+    <!-- Link0 -->
+    <gazebo reference="${arm_id}_link0">
+      <material>Gazebo/White</material>
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+    </gazebo>
+
+    <!-- Links -->
+    <gazebo reference="${arm_id}_link1">
+      <material>Gazebo/White</material>
+      <mu1>0.2415</mu1>
+      <mu2>0.2415</mu2>
+    </gazebo>
+
+    <gazebo reference="${arm_id}_link2">
+      <material>Gazebo/White</material>
+      <mu1>0.1813</mu1>
+      <mu2>0.1813</mu2>
+    </gazebo>
+
+    <gazebo reference="${arm_id}_link3">
+      <material>Gazebo/White</material>
+      <mu1>0.073</mu1>
+      <mu2>0.073</mu2>
+    </gazebo>
+
+    <gazebo reference="${arm_id}_link4">
+      <material>Gazebo/White</material>
+      <mu1>0.1767</mu1>
+      <mu2>0.1767</mu2>
+    </gazebo>
+
+    <gazebo reference="${arm_id}_link5">
+      <material>Gazebo/White</material>
+      <mu1>0.0346</mu1>
+      <mu2>0.0346</mu2>
+    </gazebo>
+
+    <gazebo reference="${arm_id}_link6">
+      <material>Gazebo/White</material>
+      <mu1>0.1339</mu1>
+      <mu2>0.1339</mu2>
+    </gazebo>
+
+    <gazebo reference="${arm_id}_link7">
+      <material>Gazebo/Grey</material>
+      <mu1>0.0871</mu1>
+      <mu2>0.0871</mu2>
+    </gazebo>
+
+    <!-- joints -->
+    <gazebo reference="${arm_id}_joint1">
+      <implicitSpringDamper>1</implicitSpringDamper>
+    </gazebo>
+
+    <gazebo reference="${arm_id}_joint2">
+      <implicitSpringDamper>1</implicitSpringDamper>
+    </gazebo>
+
+    <gazebo reference="${arm_id}_joint3">
+      <implicitSpringDamper>1</implicitSpringDamper>
+    </gazebo>
+
+    <gazebo reference="${arm_id}_joint4">
+      <implicitSpringDamper>1</implicitSpringDamper>
+    </gazebo>
+
+    <gazebo reference="${arm_id}_joint5">
+      <implicitSpringDamper>1</implicitSpringDamper>
+    </gazebo>
+
+    <gazebo reference="${arm_id}_joint6">
+      <implicitSpringDamper>1</implicitSpringDamper>
+    </gazebo>
+
+    <gazebo reference="${arm_id}_joint7">
+      <implicitSpringDamper>1</implicitSpringDamper>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>
+

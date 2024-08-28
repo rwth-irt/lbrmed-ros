@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+  <!-- Copyright (c) 2020, Institute of Automatic Control - RWTH Aachen University
+  All rights reserved. -->
+
+  <!-- unique prefix -->
+  <arg name="arm_id" default="lbrmed14" />
+  <!-- safety controllers -->
+  <arg name="enable_safety_limits" default="true" />
+  <!-- lbrmed hardware currently only supports position -->
+  <arg name="hardware_interface" value="PositionJointInterface" />
+  <!-- location of the robot -->
+  <arg name="origin_xyz" default="'0 0 0'" />
+  <arg name="origin_rpy" default="'0 0 0'" />
+  <!-- Frequency of the control loop, Position requires ≤ 10ms, Effort ≤ 5ms response -->
+  <arg name="control_loop_hz" default="250" />
+
+  <!-- Load the URDF with the given hardware interface into the ROS Parameter Server -->
+  <include file="$(find lbrmed_description)/launch/lbrmed14_upload.launch">
+    <arg name="arm_id" value="$(arg arm_id)" />
+    <arg name="enable_safety_limits" value="$(arg enable_safety_limits)" />
+    <arg name="hardware_interface" value="$(arg hardware_interface)" />
+    <arg name="origin_xyz" value="$(arg origin_xyz)" />
+    <arg name="origin_rpy" default="$(arg origin_rpy)" />
+    <arg name="enable_ft" value="false" />
+    <arg name="exclude_models" value="" />
+  </include>
+
+  <!-- Spawn the hw interfaces with the corrsponding controller in their namespace -->
+  <group ns="$(arg arm_id)">
+    <include file="$(find lbrmed_hw_fri)/launch/lbrmed_hw_fri.launch">
+      <arg name="arm_id" value="$(arg arm_id)" />
+      <arg name="hardware_interface" value="$(arg hardware_interface)" />
+    </include>
+
+    <include file="$(find lbrmed_control)/launch/lbrmed_control.launch">
+      <arg name="arm_id" value="$(arg arm_id)" />
+      <arg name="compliance_ref_link" value="$(arg arm_id)_link8" />
+      <arg name="end_effector_link" value="$(arg arm_id)_link8" />
+      <arg name="ft_sensor_ref_link" value="$(arg arm_id)_link8" />
+      <arg name="control_loop_hz" value="$(arg control_loop_hz)" />
+
+      <arg name="load_controllers" value="cartesian_motion_control_handle PositionJointInterface_cartesian_motion_controller PositionJointInterface_abs_admittance_controller"/>
+      <arg name="controllers" value="joint_state_controller force_torque_sensor_controller $(arg hardware_interface)_trajectory_controller" />
+    </include>
+
+    <node name="rqt_controller_manager" pkg="rqt_controller_manager" type="rqt_controller_manager" />
+  </group>
+
+  <!-- For MoveIt: accumulate joint states from all components and publish them to /joint states -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="rate" value="$(arg control_loop_hz)" />
+    <rosparam param="source_list" subst_value="true">["$(arg arm_id)/joint_states"]</rosparam>
+  </node>
+
+  <!-- Run the main MoveIt! executable with trajectory execution -->
+  <include file="$(find lbrmed_moveit_config)/launch/move_group.launch">
+    <arg name="hardware_interface" value="$(arg hardware_interface)" />
+  </include>
+
+  <!-- tf information about about the robot pose for RViz -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+    <param name="publish_frequency" value="$(arg control_loop_hz)" />
+    <param name="tf_prefix" type="string" value="" />
+  </node>
+
+  <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  <include file="$(find lbrmed_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="rviz_config" value="$(find lbrmed_moveit_config)/launch/moveit.rviz" />
+    <arg name="debug" value="false" />
+  </include>
+
+</launch>

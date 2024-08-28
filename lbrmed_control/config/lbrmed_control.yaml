@@ -1,0 +1,265 @@
+--- # Publish all joint states -----------------------------------
+# @license BSD-3 https://opensource.org/licenses/BSD-3-Clause
+# Copyright (c) 2020, Institute of Automatic Control - RWTH Aachen University
+# All rights reserved.
+
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: $(arg control_loop_hz)
+
+force_torque_sensor_controller:
+  type: force_torque_sensor_controller/ForceTorqueSensorController
+  publish_rate: $(arg control_loop_hz)
+
+# Controllers for singular joint ------------------------------------
+#
+# Effort Position Controllers ---------------------------------------
+
+# VALUES ARE NOT CORRECT !
+EffortJointInterface_J1_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg arm_id)_joint1
+  pid: { p: 20000, i: 0, d: 50 }
+
+EffortJointInterface_J2_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg arm_id)_joint2
+  pid: { p: 20000, i: 0, d: 50 }
+
+EffortJointInterface_J3_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg arm_id)_joint3
+  pid: { p: 10000, i: 0, d: 5 }
+
+EffortJointInterface_J4_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg arm_id)_joint4
+  pid: { p: 10000, i: 0, d: 5 }
+
+EffortJointInterface_J5_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg arm_id)_joint5
+  pid: { p: 500, i: 0, d: 1 }
+
+EffortJointInterface_J6_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg arm_id)_joint6
+  pid: { p: 500, i: 0, d: 1 }
+
+EffortJointInterface_J7_controller:
+  type: effort_controllers/JointPositionController
+  joint: $(arg arm_id)_joint7
+  pid: { p: 500, i: 0, d: 1 }
+
+# Forward Position Controllers ---------------------------------------
+PositionJointInterface_J1_controller:
+  type: position_controllers/JointPositionController
+  joint: $(arg arm_id)_joint1
+  pid: { p: 500, i: 15, d: 30, i_clamp_min: -30, i_clamp_max: 30 }
+
+PositionJointInterface_J2_controller:
+  type: position_controllers/JointPositionController
+  joint: $(arg arm_id)_joint2
+  pid: { p: 200, i: 10, d: 10, i_clamp_min: -30, i_clamp_max: 30 }
+
+PositionJointInterface_J3_controller:
+  type: position_controllers/JointPositionController
+  joint: $(arg arm_id)_joint3
+  pid: { p: 65, i: 15, d: 10, i_clamp_min: -30, i_clamp_max: 30 }
+
+PositionJointInterface_J4_controller:
+  type: position_controllers/JointPositionController
+  joint: $(arg arm_id)_joint4
+  pid: { p: 31, i: 12, d: 7, i_clamp_min: -30, i_clamp_max: 30 }
+
+PositionJointInterface_J5_controller:
+  type: position_controllers/JointPositionController
+  joint: $(arg arm_id)_joint5
+  pid: { p: 23, i: 5, d: 3, i_clamp_min: -30, i_clamp_max: 30 }
+
+PositionJointInterface_J6_controller:
+  type: position_controllers/JointPositionController
+  joint: $(arg arm_id)_joint6
+  pid: { p: 13, i: 3, d: 3, i_clamp_min: -30, i_clamp_max: 30 }
+
+PositionJointInterface_J7_controller:
+  type: position_controllers/JointPositionController
+  joint: $(arg arm_id)_joint7
+  pid: { p: 17, i: 2.5, d: 2, i_clamp_min: -10, i_clamp_max: 10 }
+
+# Trajectory Controllers ---------------------------------------
+#
+# Effort Position Controllers ---------------------------------------
+EffortJointInterface_trajectory_controller:
+  type: effort_controllers/JointTrajectoryController
+  joints:
+    - $(arg arm_id)_joint1
+    - $(arg arm_id)_joint2
+    - $(arg arm_id)_joint3
+    - $(arg arm_id)_joint4
+    - $(arg arm_id)_joint5
+    - $(arg arm_id)_joint6
+    - $(arg arm_id)_joint7
+  gains:
+    # experimental hand-tuned values
+    $(arg arm_id)_joint1: { p: 20000, i: 0, d: 50 }
+    $(arg arm_id)_joint2: { p: 20000, i: 0, d: 50 }
+    $(arg arm_id)_joint3: { p: 10000, i: 0, d: 5 }
+    $(arg arm_id)_joint4: { p: 10000, i: 0, d: 5 }
+    $(arg arm_id)_joint5: { p: 500, i: 0, d: 1 }
+    $(arg arm_id)_joint6: { p: 500, i: 0, d: 1 }
+    $(arg arm_id)_joint7: { p: 500, i: 0, d: 1 }
+  constraints:
+    stopped_velocity_tolerance: 0
+
+# Forward Position Controllers ---------------------------------------
+PositionJointInterface_trajectory_controller:
+  type: position_controllers/JointTrajectoryController
+  joints:
+    - $(arg arm_id)_joint1
+    - $(arg arm_id)_joint2
+    - $(arg arm_id)_joint3
+    - $(arg arm_id)_joint4
+    - $(arg arm_id)_joint5
+    - $(arg arm_id)_joint6
+    - $(arg arm_id)_joint7
+  # VALUES ARE NOT CORRECT ! (iiwa_stack)
+  gains:
+    $(arg arm_id)_joint1: { p: 500, d: 30, i: 15, i_clamp: 30 }
+    $(arg arm_id)_joint2: { p: 200, d: 10, i: 10, i_clamp: 30 }
+    $(arg arm_id)_joint3: { p: 65, d: 10, i: 15, i_clamp: 30 }
+    $(arg arm_id)_joint4: { p: 31, d: 7, i: 12, i_clamp: 30 }
+    $(arg arm_id)_joint5: { p: 23, d: 3, i: 5, i_clamp: 30 }
+    $(arg arm_id)_joint6: { p: 13, d: 3, i: 3, i_clamp: 30 }
+    $(arg arm_id)_joint7: { p: 17, d: 2, i: 2.5, i_clamp: 10 }
+  constraints:
+    stopped_velocity_tolerance: 0
+    # goal_time: 0.6
+
+# Cartesian Controllers
+cartesian_motion_control_handle:
+  type: "cartesian_controllers/MotionControlHandle"
+  end_effector_link: "$(arg end_effector_link)"
+  robot_base_link: "$(arg arm_id)_link0"
+  target_frame_topic: "/$(arg arm_id)/cartesian_motion_controller/target_frame"
+  joints:
+    - $(arg arm_id)_joint1
+    - $(arg arm_id)_joint2
+    - $(arg arm_id)_joint3
+    - $(arg arm_id)_joint4
+    - $(arg arm_id)_joint5
+    - $(arg arm_id)_joint6
+    - $(arg arm_id)_joint7
+
+PositionJointInterface_cartesian_motion_controller:
+  type: "position_controllers/CartesianMotionController"
+  end_effector_link: "$(arg end_effector_link)"
+  robot_base_link: "$(arg arm_id)_link0"
+  target_frame_topic: "/$(arg arm_id)/cartesian_motion_controller/target_frame"
+  joints:
+    - $(arg arm_id)_joint1
+    - $(arg arm_id)_joint2
+    - $(arg arm_id)_joint3
+    - $(arg arm_id)_joint4
+    - $(arg arm_id)_joint5
+    - $(arg arm_id)_joint6
+    - $(arg arm_id)_joint7
+  pd_gains:
+    trans_x: { p: 1.0, d: 0.0 }
+    trans_y: { p: 1.0, d: 0.0 }
+    trans_z: { p: 1.0, d: 0.0 }
+    rot_x: { p: 1.0, d: 0.0 }
+    rot_y: { p: 1.0, d: 0.0 }
+    rot_z: { p: 1.0, d: 0.0 }
+  # ik_solver: damped_least_squares
+  solver:
+    error_scale: 1
+    iterations: 100
+
+PositionJointInterface_cartesian_compliance_controller:
+  type: "position_controllers/CartesianComplianceController"
+  compliance_ref_link: "$(arg compliance_ref_link)"
+  end_effector_link: "$(arg end_effector_link)"
+  ft_sensor_ref_link: "$(arg ft_sensor_ref_link)"
+  robot_base_link: "$(arg arm_id)_link0"
+  target_frame_topic: "/$(arg arm_id)/cartesian_motion_controller/target_frame"
+  joints:
+    - $(arg arm_id)_joint1
+    - $(arg arm_id)_joint2
+    - $(arg arm_id)_joint3
+    - $(arg arm_id)_joint4
+    - $(arg arm_id)_joint5
+    - $(arg arm_id)_joint6
+    - $(arg arm_id)_joint7
+  pd_gains:
+    trans_x: { p: 0.001, d: 0.0 }
+    trans_y: { p: 0.001, d: 0.0 }
+    trans_z: { p: 0.001, d: 0.0 }
+    rot_x: { p: 0.001, d: 0.0 }
+    rot_y: { p: 0.001, d: 0.0 }
+    rot_z: { p: 0.001, d: 0.0 }
+  stiffness: # w.r.t. compliance_ref_link
+    trans_x: 2000
+    trans_y: 2000
+    trans_z: 500
+    rot_x: 500
+    rot_y: 500
+    rot_z: 500
+  gravity:
+    x: 0.0
+    y: 0.0
+    z: -9.81
+  tool:
+    mass: 0.79
+    com_x: -0.03277
+    com_y: -0.03123
+    com_z: -0.00685
+  solver:
+    iterations: 100
+
+PositionJointInterface_cartesian_force_controller:
+  type: "position_controllers/CartesianForceController"
+  end_effector_link: "$(arg end_effector_link)"
+  ft_sensor_ref_link: "$(arg ft_sensor_ref_link)"
+  robot_base_link: "$(arg arm_id)_link0"
+  joints:
+    - $(arg arm_id)_joint1
+    - $(arg arm_id)_joint2
+    - $(arg arm_id)_joint3
+    - $(arg arm_id)_joint4
+    - $(arg arm_id)_joint5
+    - $(arg arm_id)_joint6
+    - $(arg arm_id)_joint7
+  pd_gains:
+    trans_x: { p: 0.05, d: 0.0 }
+    trans_y: { p: 0.05, d: 0.0 }
+    trans_z: { p: 0.05, d: 0.0 }
+    rot_x: { p: 0.01, d: 0.0 }
+    rot_y: { p: 0.01, d: 0.0 }
+    rot_z: { p: 0.01, d: 0.0 }
+  gravity:
+    x: 0.0
+    y: 0.0
+    z: -9.81
+  tool:
+    mass: 0.79
+    com_x: -0.03277
+    com_y: -0.03123
+    com_z: -0.00685
+  solver:
+    iterations: 100
+
+PositionJointInterface_abs_admittance_controller:
+  type: "lbrmed_control/AbsAdmittanceController"
+  end_effector_link: "$(arg end_effector_link)"
+  robot_base_link: "$(arg arm_id)_link0"
+  joints:
+    - $(arg arm_id)_joint1
+    - $(arg arm_id)_joint2
+    - $(arg arm_id)_joint3
+    - $(arg arm_id)_joint4
+    - $(arg arm_id)_joint5
+    - $(arg arm_id)_joint6
+    - $(arg arm_id)_joint7
+  force_limit: 40 # Maximum difference to static tare force to avoid damages
+  dynamic_tare_time: 3.0 # Time in motion after which the dynamic tare force is set

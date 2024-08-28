@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="lbrmed14" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Tipp: for URDF preview in vscode use the lbrmed14.urdf.xacro -->
+
+  <!-- Import Rviz colors -->
+  <xacro:include filename="$(find lbrmed_description)/urdf/materials.xacro" />
+
+  <!-- constants for safety limits http://wiki.ros.org/pr2_controller_manager/safety_limits -->
+  <xacro:property name="safety_controller_k_pos" value="2" />
+  <xacro:property name="safety_controller_k_vel" value="60" />
+  <!-- joint 4 has the lowest max at 75°/s -->
+  <xacro:property name="max_velocity" value="${25 * pi / 180}" />
+
+  <xacro:macro name="lbrmed14" params="connected_to:='' arm_id:='lbrmed14' rpy:='0 0 0' xyz:='0 0 0' enable_safety_limits:=false">
+
+    <!--joint between {connected_to} and link0-->
+    <xacro:unless value="${not connected_to}">
+      <joint name="${arm_id}_joint0" type="fixed">
+        <parent link="${connected_to}" />
+        <child link="${arm_id}_link0" />
+        <origin rpy="${rpy}" xyz="${xyz}" />
+      </joint>
+    </xacro:unless>
+
+    <link name="${arm_id}_link0">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="5" />
+        <inertia ixx="0.05" ixy="0" ixz="0" iyy="0.06" iyz="0" izz="0.03" />
+      </inertial>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/visual/LBR_Med_14_R820_Part_1.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </visual>
+
+      <collision>
+        <!-- the z offset is required to avoid ground plane collision jitter -->
+        <origin xyz="0 0 0.01" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/collision/LBR_Med_14_R820_Part_1.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </collision>
+    </link>
+
+    <!-- joint between link0 and link1 -->
+    <joint name="${arm_id}_joint1" type="revolute">
+      <parent link="${arm_id}_link0" />
+      <child link="${arm_id}_link1" />
+      <origin xyz="0 0 0.1575" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="${-169 * pi / 180}" upper="${169 * pi / 180}" effort="320" velocity="${max_velocity}" />
+      <xacro:if value="${enable_safety_limits}">
+        <safety_controller soft_lower_limit="${-168 * pi / 180}" soft_upper_limit="${168 * pi / 180}" k_position="${safety_controller_k_pos}" k_velocity="${safety_controller_k_vel}" />
+      </xacro:if>
+      <dynamics damping="0.2415" />
+    </joint>
+
+    <link name="${arm_id}_link1">
+      <inertial>
+        <origin xyz="0 -0.03 0.12" rpy="0 0 0" />
+        <mass value="4" />
+        <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.09" iyz="0" izz="0.02" />
+      </inertial>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/visual/LBR_Med_14_R820_Part_2.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/collision/LBR_Med_14_R820_Part_2.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </collision>
+    </link>
+
+    <!-- joint between link1 and link2 -->
+    <joint name="${arm_id}_joint2" type="revolute">
+      <parent link="${arm_id}_link1" />
+      <child link="${arm_id}_link2" />
+      <origin xyz="0 0 0.2025" rpy="${pi / 2} 0 ${pi}" />
+      <axis xyz="0 0 1" />
+      <limit lower="${-119 * pi / 180}" upper="${119 * pi / 180}" effort="320" velocity="${max_velocity}" />
+      <xacro:if value="${enable_safety_limits}">
+        <safety_controller soft_lower_limit="${-118 * pi / 180}" soft_upper_limit="${118 * pi / 180}" k_position="${safety_controller_k_pos}" k_velocity="${safety_controller_k_vel}" />
+      </xacro:if>
+      <dynamics damping="0.1" />
+    </joint>
+
+    <link name="${arm_id}_link2">
+      <inertial>
+        <origin xyz="0.0003 0.059 0.042" rpy="0 0 0" />
+        <mass value="4" />
+        <inertia ixx="0.05" ixy="0" ixz="0" iyy="0.018" iyz="0" izz="0.044" />
+      </inertial>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/visual/LBR_Med_14_R820_Part_3.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/collision/LBR_Med_14_R820_Part_3.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </collision>
+    </link>
+
+    <!-- joint between link2 and link3 -->
+    <joint name="${arm_id}_joint3" type="revolute">
+      <parent link="${arm_id}_link2" />
+      <child link="${arm_id}_link3" />
+      <origin xyz="0 0.2045 0" rpy="${pi / 2} 0 ${pi}" />
+      <axis xyz="0 0 1" />
+      <limit lower="${-169 * pi / 180}" upper="${169 * pi / 180}" effort="176" velocity="${max_velocity}" />
+      <xacro:if value="${enable_safety_limits}">
+        <safety_controller soft_lower_limit="${-168 * pi / 180}" soft_upper_limit="${168 * pi / 180}" k_position="${safety_controller_k_pos}" k_velocity="${safety_controller_k_vel}" />
+      </xacro:if>
+      <dynamics damping="0.11025" />
+    </joint>
+
+    <link name="${arm_id}_link3">
+      <inertial>
+        <origin xyz="0 0.03 0.13" rpy="0 0 0" />
+        <mass value="3" />
+        <inertia ixx="0.08" ixy="0" ixz="0" iyy="0.075" iyz="0" izz="0.01" />
+      </inertial>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/visual/LBR_Med_14_R820_Part_4.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/collision/LBR_Med_14_R820_Part_4.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </collision>
+    </link>
+
+    <!-- joint between link3 and link4 -->
+    <joint name="${arm_id}_joint4" type="revolute">
+      <parent link="${arm_id}_link3" />
+      <child link="${arm_id}_link4" />
+      <origin xyz="0 0 0.2155" rpy="${pi / 2} 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="${-119 * pi / 180}" upper="${119 * pi / 180}" effort="176" velocity="${max_velocity}" />
+      <xacro:if value="${enable_safety_limits}">
+        <safety_controller soft_lower_limit="${-118 * pi / 180}" soft_upper_limit="${118 * pi / 180}" k_position="${safety_controller_k_pos}" k_velocity="${safety_controller_k_vel}" />
+      </xacro:if>
+      <dynamics damping="0.1" />
+    </joint>
+
+    <link name="${arm_id}_link4">
+      <inertial>
+        <origin xyz="0 0.067 0.034" rpy="0 0 0" />
+        <mass value="2.7" />
+        <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.029" />
+      </inertial>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/visual/LBR_Med_14_R820_Part_5.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/collision/LBR_Med_14_R820_Part_5.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </collision>
+    </link>
+
+    <!-- joint between link4 and link5 -->
+    <joint name="${arm_id}_joint5" type="revolute">
+      <parent link="${arm_id}_link4" />
+      <child link="${arm_id}_link5" />
+      <origin xyz="0 0.1845 0" rpy="${-pi / 2} ${pi} 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="${-169 * pi / 180}" upper="${169 * pi / 180}" effort="110" velocity="${max_velocity}" />
+      <xacro:if value="${enable_safety_limits}">
+        <safety_controller soft_lower_limit="${-168 * pi / 180}" soft_upper_limit="${168 * pi / 180}" k_position="${safety_controller_k_pos}" k_velocity="${safety_controller_k_vel}" />
+      </xacro:if>
+      <dynamics damping="0.1" />
+    </joint>
+
+    <link name="${arm_id}_link5">
+      <inertial>
+        <origin xyz="0.0001 0.021 0.076" rpy="0 0 0" />
+        <mass value="1.7" />
+        <inertia ixx="0.02" ixy="0" ixz="0" iyy="0.018" iyz="0" izz="0.005" />
+      </inertial>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/visual/LBR_Med_14_R820_Part_6.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/collision/LBR_Med_14_R820_Part_6.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </collision>
+    </link>
+
+    <!-- joint between link5 and link6 -->
+    <joint name="${arm_id}_joint6" type="revolute">
+      <parent link="${arm_id}_link5" />
+      <child link="${arm_id}_link6" />
+      <origin xyz="0 0 0.2155" rpy="${pi / 2} 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="${-119 * pi / 180}" upper="${119 * pi / 180}" effort="40" velocity="${max_velocity}" />
+      <xacro:if value="${enable_safety_limits}">
+        <safety_controller soft_lower_limit="${-118 * pi / 180}" soft_upper_limit="${118 * pi / 180}" k_position="${safety_controller_k_pos}" k_velocity="${safety_controller_k_vel}" />
+      </xacro:if>
+      <dynamics damping="0.12484" />
+    </joint>
+
+    <link name="${arm_id}_link6">
+      <inertial>
+        <origin xyz="0 0.0006 0.0004" rpy="0 0 0" />
+        <mass value="1.8" />
+        <inertia ixx="0.005" ixy="0" ixz="0" iyy="0.0036" iyz="0" izz="0.0047" />
+      </inertial>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/visual/LBR_Med_14_R820_Part_7.stl" />
+        </geometry>
+        <material name="lbrmed_RAL9016" />
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/collision/LBR_Med_14_R820_Part_7.stl" />
+        </geometry>
+        <material name="lbrmed_lbrmed_RAL9016" />
+      </collision>
+    </link>
+
+    <!-- joint between link6 and link7 -->
+    <joint name="${arm_id}_joint7" type="revolute">
+      <parent link="${arm_id}_link6" />
+      <child link="${arm_id}_link7" />
+      <origin xyz="0 0.081 0" rpy="${- pi / 2} ${pi} 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="${-174 * pi / 180}" upper="${174 * pi / 180}" effort="40" velocity="${max_velocity}" />
+      <xacro:if value="${enable_safety_limits}">
+        <safety_controller soft_lower_limit="${-173 * pi / 180}" soft_upper_limit="${173 * pi / 180}" k_position="${safety_controller_k_pos}" k_velocity="${safety_controller_k_vel}" />
+      </xacro:if>
+      <dynamics damping="0.1" />
+    </joint>
+
+    <link name="${arm_id}_link7">
+      <inertial>
+        <origin xyz="0 0 0.02" rpy="0 0 0" />
+        <mass value="0.3" />
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001" />
+      </inertial>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/visual/LBR_Med_14_R820_Part_8.stl" />
+        </geometry>
+        <material name="lbrmed_grey" />
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://lbrmed_description/meshes/lbrmed14/collision/LBR_Med_14_R820_Part_8.stl" />
+        </geometry>
+        <material name="lbrmed_grey" />
+      </collision>
+    </link>
+
+    <!-- joint between link7 and link8 -->
+    <joint name="${arm_id}_joint8" type="fixed">
+      <parent link="${arm_id}_link7" />
+      <child link="${arm_id}_link8" />
+      <origin xyz="0 0 0.045" rpy="0 0 0" />
+    </joint>
+
+    <!-- link8 as an endeffector interface -->
+    <link name="${arm_id}_link8" />
+
+  </xacro:macro>
+
+</robot>

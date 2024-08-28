@@ -1,0 +1,7 @@
+<library path="lib/liblbrmed_control">
+  <class name="lbrmed_control/AbsAdmittanceController" type="lbrmed_control::AbsAdmittanceController" base_class_type="controller_interface::ControllerBase">
+    <description>
+    Approaches object with constant velocity in z direction of tool until maximum force is reached.
+    </description>
+  </class>
+</library>

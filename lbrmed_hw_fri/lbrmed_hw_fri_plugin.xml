@@ -1,0 +1,7 @@
+<library path="lib/liblbrmed_hw_fri">
+  <class name="lbrmed_hw_fri/HardwareInterface" type="lbrmed_hw_fri::HardwareInterface" base_class_type="hardware_interface::RobotHW">
+    <description>
+            Interface for an KUKA LBR lbrmed arm.
+    </description>
+  </class>
+</library>
