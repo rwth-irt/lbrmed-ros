@@ -12,7 +12,8 @@ jobs:
   CI:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:noble
+      # avoid long installation times
+      image: moveit/moveit:noetic-release
     steps:
       - uses: ros-tooling/setup-ros@v0.7
         with:
