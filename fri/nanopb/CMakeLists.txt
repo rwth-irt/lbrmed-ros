@@ -1,38 +1,36 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(nanopb)
 
 find_package(catkin REQUIRED)
 
 catkin_package(
     INCLUDE_DIRS include
-    LIBRARIES nanopb
+    LIBRARIES ${PROJECT_NAME}
 )
 
 include_directories(${catkin_INCLUDE_DIRS} include ${CMAKE_CURRENT_SOURCE_DIR}/include)
 # Define target
-add_library(nanopb
+add_library(${PROJECT_NAME}
     src/pb_decode.c
     src/pb_encode.c
 )
 
-
-
 if(MSVC)
-    target_compile_options(nanopb
+    target_compile_options(${PROJECT_NAME}
         PRIVATE
-            -DPB_SYSTEM_HEADER=<nanopb/pb_syshdr_win.h>
+            -DPB_SYSTEM_HEADER=<${PROJECT_NAME}/pb_syshdr_win.h>
             -DPB_FIELD_16BIT
             -DWIN32
             -DHAVE_STDINT_H
             -DHAVE_STDBOOL_H
     )
 else()
-    target_compile_options(nanopb
+    target_compile_options(${PROJECT_NAME}
         PRIVATE
             -O2
             -Wall
             -DHAVE_SOCKLEN_T
-            -DPB_SYSTEM_HEADER=<nanopb/pb_syshdr.h>
+            -DPB_SYSTEM_HEADER=<${PROJECT_NAME}/pb_syshdr.h>
             -DPB_FIELD_16BIT
             -DHAVE_STDINT_H
             -DHAVE_STDDEF_H
@@ -43,12 +41,12 @@ else()
 endif()
 
 # Add include directories for target
-target_include_directories(nanopb PUBLIC include PRIVATE src
+target_include_directories(${PROJECT_NAME} PUBLIC include PRIVATE src
 )
-target_link_libraries(nanopb ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 # Install
 install(
-    TARGETS nanopb
+    TARGETS ${PROJECT_NAME}
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}

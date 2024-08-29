@@ -1,17 +1,17 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(fri)
 
 find_package(catkin REQUIRED COMPONENTS nanopb)
 
 catkin_package(
     INCLUDE_DIRS include
-    LIBRARIES fri_lib
+    LIBRARIES ${PROJECT_NAME}_lib
     CATKIN_DEPENDS nanopb
 )
 include_directories(${catkin_INCLUDE_DIRS} include ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Define target
-add_library(fri_lib
+add_library(${PROJECT_NAME}_lib
     src/friClientApplication.cpp
     src/friCommandMessageEncoder.cpp
     src/friLBRClient.cpp
@@ -26,7 +26,7 @@ add_library(fri_lib
 
 # Add compile options
 if(MSVC)
-    target_compile_options(fri_lib
+    target_compile_options(${PROJECT_NAME}_lib
         PRIVATE -DPB_SYSTEM_HEADER=<nanopb/pb_syshdr_win.h>
             -DPB_FIELD_16BIT
             -DWIN32
@@ -34,7 +34,7 @@ if(MSVC)
             -DHAVE_STDBOOL_H
     )
 else()
-    target_compile_options(fri_lib
+    target_compile_options(${PROJECT_NAME}_lib
         PRIVATE
             -O2
             -Wall
@@ -49,15 +49,15 @@ else()
 endif()
 
 # Add include directories for target
-target_include_directories(fri_lib PUBLIC include PRIVATE src)
+target_include_directories(${PROJECT_NAME}_lib PUBLIC include PRIVATE src)
 
 # Link against dependencies
-target_link_libraries(fri_lib
+target_link_libraries(${PROJECT_NAME}_lib
     ${catkin_LIBRARIES}
 )
 
 # Install
-install(TARGETS fri_lib  
+install(TARGETS ${PROJECT_NAME}_lib  
 ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
