@@ -1,0 +1,63 @@
+// @license BSD-3 https://opensource.org/licenses/BSD-3-Clause
+// Copyright (c) 2021, Institute of Automatic Control - RWTH Aachen University
+// All rights reserved. 
+{
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "ros-devcontainer",
+  "workspaceFolder": "/workspace/src/lbrmed-ros",
+  // Source the ROS workspace, the ${containerWorkspaceFolder} variable only gets replaced in this .json
+  // Install dependencies for workspace except Gazebo packages as the OSRF version is installed
+  "postCreateCommand": "echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> ${HOME}/.bashrc && echo 'source ${containerWorkspaceFolder}/devel/setup.bash' >> ${HOME}/.bashrc && /bin/sh .devcontainer/postCreate.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dotjoshjohnson.xml",
+        "epivision.vscode-file-header",
+        "gruntfuggly.todo-tree",
+        "mhutchie.git-graph",
+        "ms-azuretools.vscode-docker",
+        "ms-iot.vscode-ros",
+        "ms-python.black-formatter",
+        "ms-python.flake8",
+        "ms-python.python",
+        "ms-vscode.cmake-tools",
+        "ms-vscode.cpptools",
+        "ms-vsliveshare.vsliveshare",
+        "oderwat.indent-rainbow",
+        "redhat.vscode-yaml",
+        "streetsidesoftware.code-spell-checker",
+        "twxs.cmake",
+        "valentjn.vscode-ltex",
+        "visualstudioexptteam.vscodeintellicode"
+      ],
+      // Set *default* container specific settings.json values on container create.
+      "settings": {
+        // Use C/C++ extension for formatting, linting and debugging
+        "C_Cpp.clang_format_style": "file",
+        "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+        "C_Cpp.default.cppStandard": "c++14",
+        "C_Cpp.default.cStandard": "c11",
+        "C_Cpp.formatting": "clangFormat",
+        "[cpp]": {
+          "editor.defaultFormatter": "ms-vscode.cpptools"
+        },
+        // Other settings
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2,
+        "git.repositoryScanMaxDepth": 3,
+        "powerHeader.autoInsert.enable": true,
+        "powerHeader.commentMode": "line",
+        "powerHeader.template": "file://${containerWorkspaceFolder}/.vscode/copyright_template.txt",
+        "python.formatting.provider": "autopep8",
+        "python.autoComplete.extraPaths": [
+          "/opt/ros/${env:ROS_DISTRO}/lib/python3/dist-packages"
+        ],
+        "python.analysis.extraPaths": [
+          "/opt/ros/${env:ROS_DISTRO}/lib/python3/dist-packages"
+        ],
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.gpuAcceleration": "on"
+      }
+    }
+  }
+}

@@ -12,12 +12,26 @@ Please look at the READMEs in the specific hardware packages.
 **When using the real robot, always keep a safe distance and set up your safety configuration as required**.
 
 # Install
-## Create a catkin workspace
+## Devcontainer
+This is the easiest way to get started
+When opening this repository in Visual Studio Code, you should be prompted to reopen it in a container.
+On launch, the container will setup all required dependencies via rosinstall and rosdep.
+
+This repository also ships **VS Code tasks** for:
+- Building the workspace `catkin build workspace`
+- Building the package of the current file only `catkin build package`
+- Clean the catkin build files `catkin clean`
+
+After starting the container, the lbrmed-ros package will be opened as **workspace**.
+The folder structure is `/workspace/src/lbrmed-ros`, so you will want to `cd` to a top-level folder when using low-level catkin commands
+
+## Manual steps
+### Create a catkin workspace
 * Create a catkin workspace folder (e.g. ~/catkin_workspace)
 * Create a src folder in that workspace (e.g. ~/catkin_workspace/src)
 * Initialize the catkin workspace (e.g. `cd ~/catkin_workspace && catkin init`)
 
-## Cloning the repository
+### Cloning the repository
 We use [`git-lfs`](https://packagecloud.io/github/git-lfs/install) which should be installed before cloning.
 Otherwise, you might get errors when the STL files of the robot or the jar files are being loaded.
 
@@ -25,16 +39,16 @@ For the Sunrise Project you have two ways to proceed:
 * (a) Clone the repository into the src folder of the catkin workspace
 * (b) (preferable) Clone the repository into a separate folder (e.g. ~/git-repos) and symlink it (e.g. `ln -s ~/git-repos/kuka_MED_Stack ~/catkin_workspace/src`, the target of the symlink must be an absolute path) 
 
-## Installing Dependencies
+### Installing Dependencies
 In the catkin workspace, run the following commands to install all workspace and system dependencies.
 ```bash
 wstool init src
-wstool merge -t src src/lbrmed-stack/.rosinstall
+wstool merge -t src src/lbrmed-ros/.rosinstall
 wstool update -t src
 rosdep install --from-paths src --ignore-src -r -y
 ``` 
 
-## Building the workspace
+### Building the workspace
 To build the packages in parallel, we use the [catkin_tools](https://catkin-tools.readthedocs.io/en/latest/installing.html). After installing them, run:
 ```bash
 cd ~/catkin_workspace

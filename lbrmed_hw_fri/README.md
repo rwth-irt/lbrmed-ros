@@ -40,9 +40,6 @@ Calls the `set_impedance_fri` service of the `lbrmed_hw_fri_node` to set the sti
 ## Acknowledgment
 Based on [lbr_fri_ros2_stack](https://github.com/KCL-BMEIS/lbr_fri_ros2_stack/tree/noetic) which has a noetic branch.
 
-# Setup
-For the internal irt setup take a look at the [gitlab wiki](https://git-ce.rwth-aachen.de/g-med-irt-robotik/lbrmed-stack/-/wikis/Robot%20Hardware%20Usage) and the [irt wiki](https://wiki.irt.rwth-aachen.de/wiki/KUKA_LBR).
-
 ## Setup the Controller
 The controller (Sunrise Cabinet) receives commands from the ROS machine via the FRI. Therefore, the server application has to be pushed onto the Sunrise Cabinet.
 - Connect an ethernet cable to port X66 on the Sunrise Cabinet
