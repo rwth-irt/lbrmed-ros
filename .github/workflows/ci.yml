@@ -30,7 +30,4 @@ jobs:
           vcs-repo-file-url: .rosinstall
         id: ros_ci
       - name: catkin lint
-        run: |
-          ls ${{ steps.ros_ci.outputs.ros-workspace-directory-name }}
-          . ${{ steps.ros_ci.outputs.ros-workspace-directory-name }}/devel/setup.sh
-          catkin_lint -W2 --pkg lbrmed_bringup —pkg lbrmed_control —pkg lbrmed_description —pkg lbrmed_hw_fri —pkg lbrmed_moveit_config —pkg lbrmed_msgs
+        run: catkin_lint -W2 --pkg lbrmed_bringup —pkg lbrmed_control —pkg lbrmed_description —pkg lbrmed_hw_fri —pkg lbrmed_moveit_config —pkg lbrmed_msgs
