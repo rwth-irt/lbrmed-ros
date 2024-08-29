@@ -13,23 +13,14 @@ on:
       - main
 
 jobs:
-  CI:
+  industrial_ci:
+    name: ROS Industrial CI
     runs-on: ubuntu-latest
-    container:
-      # avoid long installation times
-      image: ros:noetic-robot
     steps:
       - uses: actions/checkout@v4
-      - uses: ros-tooling/setup-ros@v0.7
-        with:
-          required-ros-distributions: noetic
-      - uses: ros-tooling/action-ros-ci@v0.3
-        with:
-          package-name: lbrmed_bringup lbrmed_control lbrmed_description lbrmed_hw_fri lbrmed_moveit_config lbrmed_msgs
-          target-ros1-distro: noetic
-          vcs-repo-file-url: .rosinstall
-        id: ros_ci
-      - name: catkin lint
-        run: |
-          . ${{ steps.ros_ci.outputs.ros-workspace-directory-name }}/devel/setup.sh
-          catkin_lint -W2 --pkg lbrmed_bringup —pkg lbrmed_control —pkg lbrmed_description —pkg lbrmed_hw_fri —pkg lbrmed_moveit_config —pkg lbrmed_msgs
+      - uses: "ros-industrial/industrial_ci@master"
+        env:
+          ROS_DISTRO: noetic
+          CATKIN_LINT: true
+          CATKIN_LINT_ARGS: -W2
+          UPSTREAM_WORKSPACE: .rosinstall
