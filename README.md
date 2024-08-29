@@ -1,3 +1,4 @@
+[![CI](https://github.com/rwth-irt/lbrmed-ros/actions/workflows/ci.yml/badge.svg)](https://github.com/rwth-irt/lbrmed-ros/actions/workflows/ci.yml)
 # KUKA LBR MED STACK
 ROS package for the Kuka LBR MED R820 (14kg)
 We support
