@@ -24,65 +24,8 @@ jobs:
           package-name: lbrmed_bringup lbrmed_control lbrmed_description lbrmed_hw_fri lbrmed_moveit_config lbrmed_msgs
           target-ros1-distro: noetic
           vcs-repo-file-url: .rosinstall
-      # Reuse the setup job's workspace state by caching it.
-      - uses: actions/cache@v4
-        with:
-          path: |
-            .catkin_tools
-            build
-            devel
-          key: ${{ runner.os }}-build-${{ github.sha }}
-
-  lint:
-    needs: CI
-    runs-on: ubuntu-latest
-    container:
-      image: moveit/moveit:noetic-release
-    steps:
-      # Reuse the previous job's workspace state by caching it.
-      - name: Cache catkin workspace directories
-        uses: actions/cache@v2
-        with:
-          path: |
-            .catkin_tools
-            build
-            devel
-          key: ${{ runner.os }}-build-${{ github.sha }}
+        id: ros_ci
       - name: catkin lint
         run: |
-          source devel/setup.bash
+          source ${{ steps.ros_ci.outputs.ros-workspace-directory-name }}/.devel/setup.bash
           catkin_lint -W2 --pkg lbrmed_bringup —pkg lbrmed_control —pkg lbrmed_description —pkg lbrmed_hw_fri —pkg lbrmed_moveit_config —pkg lbrmed_msgs
-
-        # linting_and_tests:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   container: moveit/moveit:noetic-release
-
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
-
-  # build:
-  #   needs: setup
-  #   runs-on: ubuntu-latest
-  #   container: moveit/moveit:noetic-release
-
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
-
-  #     # Run the actual build commands.
-  #     - name: Build with catkin tools
-  #       run: catkin build --summarize --no-status --force-color
-
-  #       # Source the setup.bash script before running tests.
-  #     - name: Source setup.bash and run catkin_lint
-  #       run: |
-  #         source devel/setup.bash
-  #         catkin_lint -W2 --pkg lbrmed_bringup —pkg lbrmed_control —pkg lbrmed_description —pkg lbrmed_hw_fri —pkg lbrmed_moveit_config —pkg lbrmed_msgs
-
-  #       # Run catkin tests.
-  #     - name: Run Catkin Tests
-  #       run: |
-  #         source devel/setup.bash
-  #         catkin test –no-deps lbrmed_bringup lbrmed_control lbrmed_description lbrmed_hw_fri lbrmed_moveit_config lbrmed_msgs
