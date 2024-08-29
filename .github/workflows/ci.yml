@@ -15,6 +15,7 @@ jobs:
       # avoid long installation times
       image: moveit/moveit:noetic-release
     steps:
+      - uses: actions/checkout@v4
       - uses: ros-tooling/setup-ros@v0.7
         with:
           required-ros-distributions: noetic
@@ -22,7 +23,7 @@ jobs:
         with:
           package-name: lbrmed_bringup lbrmed_control lbrmed_description lbrmed_hw_fri lbrmed_moveit_config lbrmed_msgs
           target-ros1-distro: noetic
-          vcs-repo-file-url: ../.rosinstall
+          vcs-repo-file-url: .rosinstall
 
   # build:
   #   needs: setup
