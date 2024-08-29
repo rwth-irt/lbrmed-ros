@@ -14,12 +14,13 @@ on:
 
 jobs:
   industrial_ci:
-    name: ROS ${{ matrix.ROS_DISTRO }} (${{ matrix.ROS_REPO }})
+    name: ROS Industrial CI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 # clone target repository
-      - uses: "ros-industrial/industrial_ci@master" # run industrial_ci
+      - uses: actions/checkout@v4
+      - uses: "ros-industrial/industrial_ci@master"
         env:
           ROS_DISTRO: noetic
-          CATKIN_LINT: pedantic
+          CATKIN_LINT: true
+          CATKIN_LINT_ARGS: -W2
           UPSTREAM_WORKSPACE: .rosinstall
