@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       # avoid long installation times
-      image: moveit/moveit:noetic-release
+      image: ros:noetic-robot
     steps:
       - uses: actions/checkout@v4
       - uses: ros-tooling/setup-ros@v0.7
