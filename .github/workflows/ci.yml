@@ -22,3 +22,4 @@ jobs:
         env:
           ROS_DISTRO: noetic
           CATKIN_LINT: pedantic
+          UPSTREAM_WORKSPACE: .rosinstall
