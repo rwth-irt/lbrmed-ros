@@ -19,7 +19,7 @@ Please look at the READMEs in the specific hardware packages.
   * No need to patch a kernel as we do not use kernel interrupts only the standard `ros_control` loop.
   * You might observe connectivity errors if you launch additional loads, e.g. RViz, or use a network switch.
 * We provide a **development container**, so you can start without manually installing any dependencies.
-* For custom setups, **only ROS tools** like `wstool` / `vcs` and `rosdep` are required to install dependencies.
+* Otherwise, this package is simple to set up without manual steps using `wstool` / `vcs` and `rosdep`.
 * We built collision and visualization meshes for the LBR Med with internal electric connectors.
 
 # Install
@@ -53,11 +53,10 @@ For the Sunrise Project you have two ways to proceed:
 ### Installing Dependencies
 In the catkin workspace, run the following commands to install all workspace and system dependencies.
 ```bash
-wstool init src
-wstool merge -t src src/lbrmed-ros/.rosinstall
-wstool update -t src
 rosdep install --from-paths src --ignore-src -r -y
 ``` 
+
+If you want to use the [FZI Cartesian controllers](https://github.com/fzi-forschungszentrum-informatik/cartesian_controllers), you can find the installation steps in the `lbrmed_control` [README](./lbrmed_control/README.md).
 
 ### Building the workspace
 To build the packages in parallel, we use the [catkin_tools](https://catkin-tools.readthedocs.io/en/latest/installing.html). After installing them, run:

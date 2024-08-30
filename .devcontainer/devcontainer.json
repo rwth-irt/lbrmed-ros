@@ -7,7 +7,7 @@
   "workspaceFolder": "/workspace/src/lbrmed-ros",
   // Source the ROS workspace, the ${containerWorkspaceFolder} variable only gets replaced in this .json
   // Install dependencies for workspace except Gazebo packages as the OSRF version is installed
-  "postCreateCommand": "echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> ${HOME}/.bashrc && echo 'source ${containerWorkspaceFolder}/devel/setup.bash' >> ${HOME}/.bashrc && /bin/sh .devcontainer/postCreate.sh",
+  "postCreateCommand": "echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> ${HOME}/.bashrc && echo 'source /workspace/devel/setup.bash' >> ${HOME}/.bashrc && /bin/sh .devcontainer/postCreate.sh",
   "customizations": {
     "vscode": {
       "extensions": [

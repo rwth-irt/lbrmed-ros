@@ -1,0 +1,4 @@
+- git:
+    local-name: cartesian_controllers
+    uri: https://github.com/fzi-forschungszentrum-informatik/cartesian_controllers.git
+    version: ros1

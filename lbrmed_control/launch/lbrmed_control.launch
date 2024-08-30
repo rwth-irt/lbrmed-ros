@@ -16,7 +16,7 @@
      -->
     <arg name="controllers" default="joint_state_controller force_torque_sensor_controller PositionJointInterface_trajectory_controller" />
     <!-- These controllers are only loaded and not started -->
-    <arg name="load_controllers" default=" cartesian_motion_control_handle PositionJointInterface_cartesian_motion_controller PositionJointInterface_abs_admittance_controller" />
+    <arg name="load_controllers" default="PositionJointInterface_abs_admittance_controller" />
 
     <!-- Frequency of the control loop, Position requires ≤ 10ms, Effort ≤ 5ms response -->
     <arg name="control_loop_hz" default="200" />

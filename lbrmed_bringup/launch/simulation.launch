@@ -23,7 +23,7 @@
     EffortJointInterface for grasping tasks
     PositionJointInterface for FZI cartesian controllers 
    -->
-  <arg name="hardware_interface" default="PositionJointInterface"  />
+  <arg name="hardware_interface" default="PositionJointInterface" />
   <arg name="enable_safety_limits" default="true" />
   <!-- Frequency of the control loop, Position requires ≤ 10ms, Effort ≤ 5ms response -->
   <arg name="control_loop_hz" default="200" />
@@ -52,7 +52,7 @@
   </include>
 
   <!-- ROS control boilerplate SimHWInterface -->
-  <include file="$(find lbrmed_control)/launch/lbrmed_sim_hw.launch" >
+  <include file="$(find lbrmed_control)/launch/lbrmed_sim_hw.launch">
     <arg name="arm_id" value="$(arg arm_id)" />
     <arg name="control_loop_hz" value="$(arg control_loop_hz)" />
   </include>
@@ -65,7 +65,7 @@
     <arg name="ft_sensor_ref_link" value="$(arg arm_id)_link8" />
     <arg name="control_loop_hz" value="$(arg control_loop_hz)" />
     <arg name="controllers" value="joint_state_controller $(arg hardware_interface)_trajectory_controller" />
-    <arg name="load_controllers" value="cartesian_motion_control_handle  PositionJointInterface_cartesian_motion_controller PositionJointInterface_abs_admittance_controller" />
+    <arg name="load_controllers" value="PositionJointInterface_abs_admittance_controller" />
   </include>
 
   <node name="rqt_controller_manager" pkg="rqt_controller_manager" type="rqt_controller_manager" />

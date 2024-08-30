@@ -8,7 +8,6 @@
   <license>BSD-3</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <exec_depend>cartesian_controllers</exec_depend>
   <exec_depend>joint_state_publisher</exec_depend>
   <exec_depend>lbrmed_control</exec_depend>
   <exec_depend>lbrmed_description</exec_depend>
