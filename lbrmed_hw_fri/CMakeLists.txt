@@ -62,10 +62,6 @@ install(TARGETS ${PROJECT_NAME}_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-# Install Plugin
-install(FILES ${PROJECT_NAME}_plugin.xml DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-
-
 ############
 # Unit Tests
 ############
