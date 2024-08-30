@@ -23,4 +23,3 @@ jobs:
           ROS_DISTRO: noetic
           CATKIN_LINT: true
           CATKIN_LINT_ARGS: -W2
-          UPSTREAM_WORKSPACE: .rosinstall
