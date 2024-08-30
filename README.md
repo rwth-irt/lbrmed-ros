@@ -1,6 +1,6 @@
 [![CI](https://github.com/rwth-irt/lbrmed-ros/actions/workflows/ci.yml/badge.svg)](https://github.com/rwth-irt/lbrmed-ros/actions/workflows/ci.yml)
 # KUKA LBR MED STACK
-ROS package for the Kuka LBR MED R820 (14kg)
+ROS package for the Kuka LBR MED 14, also compatible with the iiwa 14.
 We support
 - commanding the robot hardware via the KUKA FRI interface and `ros_control`.
 - kinematic simulations, Gazebo was never stable enough for contact rich tasks.
@@ -11,6 +11,16 @@ However, contact forces tend to be unstable.
 
 Please look at the READMEs in the specific hardware packages.
 **When using the real robot, always keep a safe distance and set up your safety configuration as required**.
+
+## Why Another KUKA LBR Med / iiwa 14 ROS Package?
+* The widely used [iiwa_stack](https://github.com/IFL-CAMP/iiwa_stack) from TUM did not allow us to **control the robot in real-time and with high precision**.
+  * Our robot stack **allows implementing low-level controllers** to set joint positions via the KUKA FRI interface, see [lbrmed_control](./lbrmed_control) for an example.
+  * A Laptop with a standard Ubuntu installation is sufficient.
+  * No need to patch a kernel as we do not use kernel interrupts only the standard `ros_control` loop.
+  * You might observe connectivity errors if you launch additional loads, e.g. RViz, or use a network switch.
+* We provide a **development container**, so you can start without manually installing any dependencies.
+* For custom setups, **only ROS tools** like `wstool` / `vcs` and `rosdep` are required to install dependencies.
+* We built collision and visualization meshes for the LBR Med with internal electric connectors.
 
 # Install
 ## Devcontainer
