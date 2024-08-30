@@ -11,9 +11,9 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp)
 
 catkin_package(
- INCLUDE_DIRS include  
- LIBRARIES ${PROJECT_NAME}  
- CATKIN_DEPENDS
+  INCLUDE_DIRS include  
+  LIBRARIES ${PROJECT_NAME}  
+  CATKIN_DEPENDS
   actionlib
   controller_interface
   lbrmed_msgs

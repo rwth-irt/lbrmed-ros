@@ -18,10 +18,21 @@ Provides launch files to load and start a set of default controllers.
 - `joint_state_controller`: Implements a controller which re-publishes the joint states of the robot.
 - `force_torque_sensor_controller`: Implements a controller which re-publishes the force and torque sensors of the robot.
 
+## FZI Cartesian controllers
+The config contains entries for the [FZI Cartesian controllers](https://github.com/fzi-forschungszentrum-informatik/cartesian_controllers).
+However, this package is intended to be a self-contained build and source dependencies are reduced to a minimum.
+To install the Cartesian controllers, run the following commands in the workspace root:
+```shell
+wstool init src
+wstool merge -t src src/lbrmed-ros/lbrmed_control/.rosinstall
+wstool update -t src
+```
+Then re-build and -source the whole workspace
+
 ## Custom controllers
 - `PositionJointInterface_abs_admittance_controller`: Implements an absolute force-based admittance controller.
 Compared to a normal admittance controller, the robot approaches an object until the total force exceeds a limit and stops.
-I tried implementing a similar behavior using the [FZI cartesian controllers](https://github.com/fzi-forschungszentrum-informatik/cartesian_controllers), but it deviated from the commanded position, no matter how I tuned the parameters.
+I tried implementing a similar behavior using the [FZI Cartesian controllers](https://github.com/fzi-forschungszentrum-informatik/cartesian_controllers), but it deviated from the commanded position, no matter how I tuned the parameters.
 This controller uses good old KDL inverse kinematics and monitors the forces in the ROS control loop.
 Compared to the FZI version, this implementation is **less robust near singularities**.
   - Offers `abs_admittance_control` action:

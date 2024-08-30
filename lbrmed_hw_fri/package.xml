@@ -20,8 +20,4 @@
   <exec_depend>hardware_interface</exec_depend>
   <exec_depend>lbrmed_control</exec_depend>
 
-  <export>
-    <hardware_interface plugin="${prefix}/lbrmed_hw_fri_plugin.xml" />
-  </export>
-
 </package>

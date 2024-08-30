@@ -1,0 +1,70 @@
+/* Copyright (c) 2020, Institute of Automatic Control - RWTH Aachen University
+   All rights reserved. */
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "merge compile_commands.json",
+      "type": "shell",
+      "command": "cd /workspace && jq -s 'map(.[])' /workspace/build/**/compile_commands.json > /workspace/build/compile_commands.json",
+      "group": "none",
+      "problemMatcher": "$catkin-gcc"
+    },
+    {
+      "label": "catkin build workspace",
+      "type": "shell",
+      "command": "cd /workspace && catkin build && jq -s 'map(.[])' /workspace/build/**/compile_commands.json > /workspace/build/compile_commands.json",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$catkin-gcc"
+      ]
+    },
+    {
+      "label": "catkin build package",
+      "type": "shell",
+      "command": "cd ${fileDirname} && catkin build --this --workspace /workspace && jq -s 'map(.[])' /workspace/build/**/compile_commands.json > /workspace/build/compile_commands.json",
+      "problemMatcher": [
+        "$catkin-gcc"
+      ]
+    },
+    {
+      "label": "catkin test current",
+      "type": "shell",
+      "command": "cd ${fileDirname} && catkin build --this --workspace /workspace --cmake-args -DCMAKE_BUILD_TYPE=Debug && catkin test --no-deps --this --verbose",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "catkin config debug",
+      "type": "shell",
+      "command": "cd /workspace && catkin config -j $(($(nproc)-1)) --cmake-args -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1",
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "catkin config release",
+      "type": "shell",
+      "command": "cd /workspace && catkin config -j $(($(nproc)-1)) --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=1",
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "catkin clean",
+      "type": "shell",
+      "command": "cd /workspace && catkin clean --yes",
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    }
+  ]
+}

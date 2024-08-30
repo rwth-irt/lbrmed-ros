@@ -18,7 +18,6 @@
 #include <kdl_parser/kdl_parser.hpp>
 // ROS
 #include <ros/console.h>
-#include <ros_control_boilerplate/combinable_generic_hw.h>
 #include <rosparam_shortcuts/rosparam_shortcuts.h>
 #include <transmission_interface/transmission_interface.h>
 // KUKA lib
@@ -213,5 +212,3 @@ double HardwareInterface::low_pass_filter(double y_k, double u_k, double T, doub
 }
 
 }  // namespace lbrmed_hw_fri
-PLUGINLIB_EXPORT_CLASS(ros_control_boilerplate::CombinableGenericHW<lbrmed_hw_fri::HardwareInterface>,
-                       hardware_interface::RobotHW)

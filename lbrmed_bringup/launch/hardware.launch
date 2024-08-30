@@ -40,7 +40,7 @@
       <arg name="ft_sensor_ref_link" value="$(arg arm_id)_link8" />
       <arg name="control_loop_hz" value="$(arg control_loop_hz)" />
 
-      <arg name="load_controllers" value="cartesian_motion_control_handle PositionJointInterface_cartesian_motion_controller PositionJointInterface_abs_admittance_controller"/>
+      <arg name="load_controllers" value="PositionJointInterface_abs_admittance_controller"/>
       <arg name="controllers" value="joint_state_controller force_torque_sensor_controller $(arg hardware_interface)_trajectory_controller" />
     </include>
 
